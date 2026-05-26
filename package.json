@@ -1,0 +1,15 @@
+{
+  "name": "kirana-smart",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail --prefix-colors \"cyan,magenta,yellow\" -n \"LANDING,FRONTEND,BACKEND\" \"npm run dev:landing\" \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:landing": "cd landing-page && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && uvicorn app.main:app --reload --port 8000",
+    "install:all": "npm install && cd landing-page && npm install && cd ../frontend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
