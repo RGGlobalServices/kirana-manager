@@ -50,6 +50,76 @@ npm run dev
 
 ---
 
+## Render Deployment (Recommended for MVP)
+
+### Landing Page (Vite — static site)
+
+1. Go to https://dashboard.render.com → **New + → Static Site**
+2. Connect your GitHub repo `RGGlobalServices/kirana-manager`
+3. Fill in:
+   - **Name:** `kirana-landing`
+   - **Root Directory:** `landing-page`
+   - **Build Command:** `npm install && npm run build`
+   - **Publish Directory:** `dist`
+4. Click **Create Static Site**
+5. Your landing page will be live at `https://kirana-landing.onrender.com`
+
+> **Note:** The landing page is a standalone Vite site (`landing-page/`). It does not require a server — Render serves the built static files directly.
+
+### Backend (FastAPI — web service)
+
+1. **New + → Web Service**
+2. Connect the same repo
+3. Fill in:
+   - **Name:** `kirana-backend`
+   - **Root Directory:** `backend`
+   - **Runtime:** `Python 3`
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+4. Add environment variables (under **Environment**):
+   - `DATABASE_URL` — use Render's free PostgreSQL (see below)
+   - `SECRET_KEY` — generate a random string
+   - `LANDING_URL` — `https://kirana-landing.onrender.com`
+   - `APP_URL` — your frontend URL (Next.js, see below)
+   - `BACKEND_URL` — `https://kirana-backend.onrender.com`
+   - `KS_GOOGLE_CLIENT_ID` — your Google OAuth client ID
+5. Click **Create Web Service**
+
+### Database (Render PostgreSQL)
+
+1. **New + → PostgreSQL**
+2. **Name:** `kirana-db`
+3. Choose **Free** plan (1 GB storage, expires after 90 days)
+4. After creation, copy the **Internal Database URL** and set it as `DATABASE_URL` in your backend web service
+
+### Frontend (Next.js — web service or static)
+
+**Option 1 — Web Service (recommended for SSR):**
+1. **New + → Web Service**
+2. **Name:** `kirana-frontend`
+3. **Root Directory:** `frontend`
+4. **Runtime:** `Node`
+5. **Build Command:** `npm install && npm run build`
+6. **Start Command:** `npm start`
+7. Add env vars:
+   - `NODE_ENV=production`
+   - (other vars are read from the backend API at runtime)
+
+**Option 2 — Static Site (if using `next export`):**
+1. **New + → Static Site**
+2. **Root Directory:** `frontend`
+3. **Build Command:** `npm install && npm run build && npx next export`
+4. **Publish Directory:** `out`
+
+### Separate Domains (Custom)
+
+After deployment, each service gets its own `*.onrender.com` URL. To use custom domains:
+- Go to each service's **Settings → Custom Domain**
+- Add your domain (e.g., `vyaparsarthi.com` for landing, `api.vyaparsarthi.com` for backend)
+- Update your DNS with the provided CNAME records
+
+---
+
 ## AWS Deployment
 
 ### Option A — Backend on EC2 + Frontend on S3/CloudFront
