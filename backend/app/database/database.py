@@ -1,20 +1,12 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_env
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
-from pathlib import Path
-from dotenv import load_dotenv
-
-# Load from root .env.local (one level above backend/)
-_root_env = Path(__file__).resolve().parent.parent.parent.parent / ".env.local"
-if _root_env.exists():
-    load_dotenv(dotenv_path=_root_env, override=False)
 
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./kirana.db")
 
-# psycopg2 does not accept check_same_thread (SQLite-only arg)
-connect_args = {"check_same_thread": False} if SQLALCHEMY_DATABASE_URL.startswith("sqlite") else {}
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args=connect_args)
+from sqlalchemy import create_engine
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in SQLALCHEMY_DATABASE_URL else {})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

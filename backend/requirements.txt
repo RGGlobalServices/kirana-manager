@@ -1,16 +1,11 @@
 fastapi
-razorpay
-uvicorn[standard]
+uvicorn
 sqlalchemy
 psycopg2-binary
 pydantic
-pydantic-settings
 python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
-python-dotenv
 redis
 celery
 pytest
-httpx
-pywebpush

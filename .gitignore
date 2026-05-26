@@ -1,46 +1,7 @@
-# Dependencies
 node_modules/
-
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-.venv/
-venv/
-.pytest_cache/
-
-# Next.js
 .next/
-
-# Vite / build output
-dist/
-landing-page/dist/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
+coverage/
 .DS_Store
-Thumbs.db
-
-# Environment
+*.log
 .env*
 !.env.example
-
-# Logs
-*.log
-
-# Coverage
-coverage/
-
-# Uploads
-uploads/
-
-# SQLite
-*.db
-*.sqlite3
-
-.claude/
