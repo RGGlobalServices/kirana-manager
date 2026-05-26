@@ -52,6 +52,8 @@ npm run dev
 
 ## Render Deployment (Recommended for MVP)
 
+> **Quick start:** Use **New + → Blueprint** and connect your repo — `render.yaml` at repo root will auto-create the backend service + PostgreSQL database. Then manually add the Landing Page and Frontend as described below.
+
 ### Landing Page (Vite — static site)
 
 1. Go to https://dashboard.render.com → **New + → Static Site**
@@ -66,16 +68,18 @@ npm run dev
 
 > **Note:** The landing page is a standalone Vite site (`landing-page/`). It does not require a server — Render serves the built static files directly.
 
-### Backend (FastAPI — web service)
+### Backend (FastAPI — Docker)
+
+> **Important:** Use **Docker** runtime (not Python buildpack) to avoid Python 3.14 compatibility issues.
 
 1. **New + → Web Service**
 2. Connect the same repo
 3. Fill in:
    - **Name:** `kirana-backend`
+   - **Runtime:** `Docker`
    - **Root Directory:** `backend`
-   - **Runtime:** `Python 3`
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+   - **Dockerfile Path:** `./Dockerfile`
+   - **Docker Context:** `./backend`
 4. Add environment variables (under **Environment**):
    - `DATABASE_URL` — use Render's free PostgreSQL (see below)
    - `SECRET_KEY` — generate a random string
@@ -84,6 +88,9 @@ npm run dev
    - `BACKEND_URL` — `https://kirana-backend.onrender.com`
    - `KS_GOOGLE_CLIENT_ID` — your Google OAuth client ID
 5. Click **Create Web Service**
+
+**Or use `render.yaml` (Infrastructure as Code):**  
+Commit `render.yaml` at repo root and connect your repo via **New + → Blueprint**. Render will auto-create the backend service + PostgreSQL database.
 
 ### Database (Render PostgreSQL)
 
