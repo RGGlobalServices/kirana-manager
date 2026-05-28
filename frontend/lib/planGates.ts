@@ -1,3 +1,5 @@
+import { PAYMENT_URL } from './config';
+
 export type PlanKey = 'starter' | 'basic' | 'professional' | 'business';
 
 export const PLAN_DISPLAY: Record<string, string> = {
@@ -45,4 +47,4 @@ export function udharLimitDisplay(plan: string): string {
   return max === Infinity ? 'Unlimited' : max.toLocaleString('en-IN');
 }
 
-export const UPGRADE_URL = `${process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:5173'}/payment.html`;
+export const UPGRADE_URL = PAYMENT_URL;

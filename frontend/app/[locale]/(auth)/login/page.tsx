@@ -5,6 +5,7 @@ import { Eye, EyeOff, ShoppingBag, Loader2, AlertCircle, ArrowLeft, CheckCircle2
 import { cn } from '@/lib/utils';
 import { useLocale } from 'next-intl';
 import api from '@/lib/api';
+import { PAYMENT_URL } from '@/lib/config';
 
 
 type View = 'login' | 'forgot' | 'forgot-sent';
@@ -266,7 +267,7 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-slate-500">
             New to Vyapar Sarthi?{' '}
-            <button onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:5173'}/payment.html`}
+            <button onClick={() => window.location.href = PAYMENT_URL}
               className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors">
               Create account
             </button>

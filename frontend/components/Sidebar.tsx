@@ -8,6 +8,7 @@ import {
   BarChart3, LogOut, Languages, FolderUp, Settings, User, RotateCcw,   Gift, Store, HelpCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PAYMENT_URL, SUPPORT_URL } from '@/lib/config';
 import { useAuthStore } from '@/lib/store';
 import { useBusinessStore } from '@/lib/businessStore';
 import { isSubscriptionEnded, isAllowedWhenEnded } from '@/lib/subscriptionAccess';
@@ -34,7 +35,7 @@ export default function Sidebar({ locale }: { locale: string }) {
     { key: 'import',    icon: FolderUp,        href: '/import' },
     { key: 'referral',  icon: Gift,            href: '/referral' },
     { key: 'dukandar',  icon: Store,           href: '/dukandar' },
-    { key: 'support',   icon: HelpCircle,      href: `${process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:5173'}/support.html`, external: true },
+    { key: 'support',   icon: HelpCircle,      href: SUPPORT_URL, external: true },
     { key: 'settings',  icon: Settings,        href: '/settings' },
     { key: 'returns',   icon: RotateCcw,       href: '/returns' },
   ];
@@ -85,7 +86,7 @@ export default function Sidebar({ locale }: { locale: string }) {
           <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Free Plan</p>
           <p className="text-[11px] text-slate-300 leading-tight mb-2">Upgrade to Dukaan, Vyapar or Udyog for full features.</p>
           <a 
-            href={`${process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:5173'}/payment.html`}
+            href={PAYMENT_URL}
             className="block text-center py-1.5 bg-emerald-500 text-slate-900 text-[10px] font-black rounded-lg hover:bg-emerald-400 transition-colors"
           >
             UPGRADE NOW

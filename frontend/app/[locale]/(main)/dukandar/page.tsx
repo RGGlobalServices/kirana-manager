@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Store, Package, AlertTriangle, Plus, Eye, Clock, Hash, Users, Search, Copy, Check } from 'lucide-react';
 import api from '@/lib/api';
+import { PAYMENT_URL } from '@/lib/config';
 import { cn } from '@/lib/utils';
 import { useBusinessStore } from '@/lib/businessStore';
 
@@ -113,7 +114,7 @@ export default function DukandarPage() {
               </p>
             </div>
             <a
-              href={`${process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:5173'}/payment.html?plan=business`}
+              href={`${PAYMENT_URL}?plan=business`}
               className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 text-slate-900 font-bold rounded-xl hover:bg-emerald-400 transition-all"
             >
               Upgrade to Wholesale

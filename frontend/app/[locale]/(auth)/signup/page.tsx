@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import api from '@/lib/api';
+import { PAYMENT_URL } from '@/lib/config';
 import { ALL_BUSINESS_TYPES, BusinessType, getBusinessConfig } from '@/lib/businessConfig';
 
 interface Form {
@@ -84,7 +85,7 @@ export default function SignupPage() {
   const [referralCode, setReferralCode] = useState('');
 
   useEffect(() => {
-    window.location.href = `${process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:5173'}/payment.html`;
+    window.location.href = PAYMENT_URL;
     setMounted(true);
     const ref = new URLSearchParams(window.location.search).get('ref')?.trim().toUpperCase();
     if (ref) setReferralCode(ref);
