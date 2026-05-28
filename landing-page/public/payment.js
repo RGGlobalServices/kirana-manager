@@ -46,9 +46,8 @@ let planKey = urlParams.get('plan') || localStorage.getItem('ks_plan') || 'profe
 if (!PLANS[planKey]) planKey = 'professional';
 
 function ensurePreAuth() {
-  const hasEmail = !!(localStorage.getItem('ks_prefill_email') || '').trim();
-  const hasName = !!(localStorage.getItem('ks_prefill_name') || '').trim();
-  if (hasEmail && hasName) return;
+  const hasAuth = !!localStorage.getItem('ks_auth');
+  if (hasAuth) return;
   const next = encodeURIComponent(`payment.html?plan=${planKey}`);
   window.location.href = `login.html?next=${next}`;
 }
