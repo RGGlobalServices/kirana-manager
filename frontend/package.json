@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "npx dotenv-cli -e ../.env.local -- cross-env NODE_OPTIONS=--max-old-space-size=2048 next dev",
-    "build": "npx dotenv-cli -e ../.env.local -- cross-env NODE_OPTIONS=--max-old-space-size=2048 next build",
-    "start": "npx dotenv-cli -e ../.env.local -- cross-env NODE_OPTIONS=--max-old-space-size=2048 next start",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=2048 next build",
+    "start": "cross-env NODE_OPTIONS=--max-old-space-size=2048 next start",
     "lint": "eslint .",
     "clean": "next clean",
     "mobile:init": "npx cap init",
