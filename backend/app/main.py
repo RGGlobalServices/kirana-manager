@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import inspect, text
 from .database.database import engine, Base, get_db
-from .api import auth, products, billing, customers, reports
+from .api import auth, products, billing, customers, reports, shop, notifications, payments, referrals, support, dukandar, admin
 from .models import models
 import os
 import logging
@@ -25,7 +25,7 @@ app.add_middleware(
     allow_origins=[
         os.getenv("FRONTEND_URL", ""),
         os.getenv("LANDING_URL", ""),
-        "https://kirana-manager-fronend.onrender.com",
+        "https://kirana-manager-frontend.onrender.com",
         "https://kirana-manager.onrender.com",
         "https://kirana-backend.onrender.com",
         "https://kirana-manager-landing-page.onrender.com",
@@ -43,6 +43,13 @@ app.include_router(products.router, prefix="/api/v1/products", tags=["products"]
 app.include_router(billing.router, prefix="/api/v1/billing", tags=["billing"])
 app.include_router(customers.router, prefix="/api/v1/customers", tags=["customers"])
 app.include_router(reports.router, prefix="/api/v1/reports", tags=["reports"])
+app.include_router(shop.router, prefix="/api/v1/shop", tags=["shop"])
+app.include_router(notifications.router, prefix="/api/v1/notifications", tags=["notifications"])
+app.include_router(payments.router, prefix="/api/v1/payments", tags=["payments"])
+app.include_router(referrals.router, prefix="/api/v1/referrals", tags=["referrals"])
+app.include_router(support.router, prefix="/api/v1/support", tags=["support"])
+app.include_router(dukandar.router, prefix="/api/v1/dukandar", tags=["dukandar"])
+app.include_router(admin.router, prefix="/api/v1/admin", tags=["admin"])
 
 @app.get("/")
 async def root():

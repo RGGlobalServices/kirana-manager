@@ -46,3 +46,26 @@ class Sale(BaseModel):
     
     class Config:
         from_attributes = True
+
+class ShopProfile(BaseModel):
+    id: int
+    name: str
+    address: Optional[str] = None
+    mobile: Optional[str] = None
+    business_type: Optional[str] = None
+    logo_url: Optional[str] = None
+    setup_complete: bool = False
+    subscription_plan: str = 'starter'
+    subscription_status: str = 'active'
+    subscription_expiry: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+class ShopUpdate(BaseModel):
+    name: Optional[str] = None
+    address: Optional[str] = None
+    mobile: Optional[str] = None
+    business_type: Optional[str] = None
+    logo_url: Optional[str] = None
+    setup_complete: Optional[bool] = None

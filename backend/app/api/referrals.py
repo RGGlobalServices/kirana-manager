@@ -53,7 +53,7 @@ def get_my_referral_code(
         db.commit()
         db.refresh(code_info)
 
-    app_url = os.getenv("APP_URL", "https://kirana-manager-fronend.onrender.com").rstrip("/")
+    app_url = os.getenv("APP_URL", "https://kirana-manager-frontend.onrender.com").rstrip("/")
     signup_url = f"{app_url}/mr/signup"
     
     return {

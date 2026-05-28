@@ -285,7 +285,7 @@ async def payu_success(request: Request):
     finally:
         db.close()
 
-    app_url = os.getenv('APP_URL', 'https://kirana-manager-fronend.onrender.com')
+    app_url = os.getenv('APP_URL', 'https://kirana-manager-frontend.onrender.com')
     qs = urlencode({
         'plan':      plan,
         'trial_end': trial_end.strftime('%Y-%m-%d'),
