@@ -1,6 +1,6 @@
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-slate-950" suppressHydrationWarning>
+    <div suppressHydrationWarning className="min-h-screen bg-slate-950">
       {children}
     </div>
   );
