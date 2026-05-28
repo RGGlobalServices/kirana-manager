@@ -5,13 +5,18 @@
  * Simplified and robust to avoid Webpack module evaluation issues.
  */
 
+const BACKEND_API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
+
 const getBaseUrl = () => {
-  // In browser: use relative path so Next.js rewrites proxy handles it (no CORS issues).
   if (typeof window !== 'undefined') {
+    // In production, the Next.js rewrite doesn't work as a proxy (sends 307 redirect).
+    // Use the backend URL directly — CORS is already configured on the backend.
+    if (window.location.hostname !== 'localhost') {
+      return 'https://kirana-manager.onrender.com/api/v1';
+    }
     return '/api/v1';
   }
-  // SSR / server actions: call backend directly
-  return process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
+  return BACKEND_API;
 };
 
 const API_BASE_URL = getBaseUrl();

@@ -19,34 +19,36 @@ except Exception as e:
     logger.error(f"Failed to create tables: {e}")
 
 # ── DB migration: add missing columns to existing tables ──────────
-migration_queries = [
-    # users table
-    "ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name VARCHAR",
-    "ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active INTEGER DEFAULT 1",
-    # shops table
-    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS mobile VARCHAR",
-    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS business_type VARCHAR",
-    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS logo_url VARCHAR",
-    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS setup_complete INTEGER DEFAULT 0",
-    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS subscription_plan VARCHAR DEFAULT 'starter'",
-    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS subscription_status VARCHAR DEFAULT 'active'",
-    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS subscription_expiry TIMESTAMP",
-    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS subscription_cancelled_at TIMESTAMP",
-    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS cancellation_reason VARCHAR",
-    # products table
-    "ALTER TABLE products ADD COLUMN IF NOT EXISTS expiry_date VARCHAR",
-]
-try:
-    with engine.connect() as conn:
-        for q in migration_queries:
-            try:
-                conn.execute(text(q))
-                conn.commit()
-            except Exception:
-                conn.rollback()
-    logger.info("DB migration: columns added successfully")
-except Exception as e:
-    logger.warning(f"DB migration note: {e}")
+def _migrate():
+    """Check & add missing columns — each in its own autocommit connection."""
+    from sqlalchemy import inspect as sa_inspect
+    migrates = [
+        # (table, column, type_def)
+        ("users", "full_name", "VARCHAR"),
+        ("users", "is_active", "INTEGER DEFAULT 1"),
+        ("shops", "mobile", "VARCHAR"),
+        ("shops", "business_type", "VARCHAR"),
+        ("shops", "logo_url", "VARCHAR"),
+        ("shops", "setup_complete", "INTEGER DEFAULT 0"),
+        ("shops", "subscription_plan", "VARCHAR DEFAULT 'starter'"),
+        ("shops", "subscription_status", "VARCHAR DEFAULT 'active'"),
+        ("shops", "subscription_expiry", "TIMESTAMP"),
+        ("shops", "subscription_cancelled_at", "TIMESTAMP"),
+        ("shops", "cancellation_reason", "VARCHAR"),
+        ("products", "expiry_date", "VARCHAR"),
+    ]
+    try:
+        insp = sa_inspect(engine)
+        for table, col, type_def in migrates:
+            if col not in [c["name"] for c in insp.get_columns(table)]:
+                with engine.connect() as conn:
+                    conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col} {type_def}"))
+                    conn.commit()
+                    logger.info(f"Added column {table}.{col}")
+    except Exception as e:
+        logger.warning(f"DB migration note: {e}")
+
+_migrate()
 
 app = FastAPI(title="Kirana Smart Dashboard API")
 
