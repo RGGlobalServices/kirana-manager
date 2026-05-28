@@ -14,9 +14,9 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: LANDING_URL
-        value: https://your-landing.onrender.com
+        value: https://kirana-manager-landing-page.onrender.com
       - key: APP_URL
-        value: https://your-frontend.onrender.com
+        value: https://kirana-manager-landing-page.onrender.com  # ← change to frontend URL when deployed
       - key: BACKEND_URL
         value: https://kirana-backend.onrender.com
 

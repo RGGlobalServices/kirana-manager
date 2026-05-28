@@ -28,7 +28,7 @@ app.add_middleware(
         "https://kirana-manager-fronend.onrender.com",
         "https://kirana-manager.onrender.com",
         "https://kirana-backend.onrender.com",
-        "https://kirana-manager-1.onrender.com",
+        "https://kirana-manager-landing-page.onrender.com",
         "http://localhost:3000",
         "http://localhost:5173",
     ],

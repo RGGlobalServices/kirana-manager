@@ -248,7 +248,7 @@ async def payu_success(request: Request):
         udf1=plan, udf2=full_amount
     )
 
-    landing_url = os.getenv('LANDING_URL', 'https://kirana-manager-1.onrender.com')
+    landing_url = os.getenv('LANDING_URL', 'https://kirana-manager-landing-page.onrender.com')
 
     # ── Hash mismatch or non-success status ──────────────────────
     if received_hash != expected_hash or status.lower() != 'success':
@@ -302,7 +302,7 @@ async def payu_success(request: Request):
 @router.post("/payu-failure")
 async def payu_failure(request: Request):
     form        = dict(await request.form())
-    landing_url = os.getenv('LANDING_URL', 'https://kirana-manager-1.onrender.com')
+    landing_url = os.getenv('LANDING_URL', 'https://kirana-manager-landing-page.onrender.com')
     error_msg   = form.get('error_Message', 'Payment failed. Please try again.')
     plan        = form.get('udf1', '')
     qs          = urlencode({'error': error_msg, 'plan': plan, 'refund': 'none'})
