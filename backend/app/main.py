@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from sqlalchemy import inspect, text
 from .database.database import engine, Base, get_db
 from .api import auth, products, billing, customers, reports
 from .models import models
@@ -8,16 +9,16 @@ import os
 import logging
 
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Ensure all models are registered with Base then create tables
+try:
+    Base.metadata.create_all(bind=engine)
+    logger.info("Tables created successfully")
+except Exception as e:
+    logger.error(f"Failed to create tables: {e}")
 
 app = FastAPI(title="Kirana Smart Dashboard API")
-
-@app.on_event("startup")
-def on_startup():
-    try:
-        Base.metadata.create_all(bind=engine)
-        logging.info("Tables created successfully")
-    except Exception as e:
-        logging.error(f"Failed to create tables: {e}")
 
 app.add_middleware(
     CORSMiddleware,
@@ -44,3 +45,12 @@ app.include_router(reports.router, prefix="/api/v1/reports", tags=["reports"])
 @app.get("/")
 async def root():
     return {"message": "Kirana Smart Dashboard API is running"}
+
+@app.get("/health")
+def health(db: Session = Depends(get_db)):
+    try:
+        result = db.execute(text("SELECT 1")).scalar()
+        tables = inspect(engine).get_table_names()
+        return {"status": "ok", "db": "connected", "tables": tables}
+    except Exception as e:
+        return {"status": "error", "detail": str(e)}

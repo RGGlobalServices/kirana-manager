@@ -23,7 +23,10 @@ class RegisterRequest(BaseModel):
 
 @router.post("/login")
 def login(req: LoginRequest, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == req.email).first()
+    try:
+        user = db.query(User).filter(User.email == req.email).first()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
     if not user or not verify_password(req.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     token = create_access_token(data={"sub": str(user.id)})
