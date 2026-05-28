@@ -45,4 +45,4 @@ export function udharLimitDisplay(plan: string): string {
   return max === Infinity ? 'Unlimited' : max.toLocaleString('en-IN');
 }
 
-export const UPGRADE_URL = 'http://localhost:5173/payment.html';
+export const UPGRADE_URL = `${process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:5173'}/payment.html`;
