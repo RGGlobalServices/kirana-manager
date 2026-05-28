@@ -12,6 +12,9 @@ class ProductRepository:
     def get_by_barcode(self, barcode: str):
         return self.db.query(Product).filter(Product.barcode == barcode).first()
 
+    def get_by_id(self, product_id: int):
+        return self.db.query(Product).filter(Product.id == product_id).first()
+
     def create(self, product_in: ProductCreate):
         db_product = Product(**product_in.dict())
         self.db.add(db_product)

@@ -18,6 +18,36 @@ try:
 except Exception as e:
     logger.error(f"Failed to create tables: {e}")
 
+# ── DB migration: add missing columns to existing tables ──────────
+migration_queries = [
+    # users table
+    "ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name VARCHAR",
+    "ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active INTEGER DEFAULT 1",
+    # shops table
+    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS mobile VARCHAR",
+    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS business_type VARCHAR",
+    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS logo_url VARCHAR",
+    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS setup_complete INTEGER DEFAULT 0",
+    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS subscription_plan VARCHAR DEFAULT 'starter'",
+    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS subscription_status VARCHAR DEFAULT 'active'",
+    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS subscription_expiry TIMESTAMP",
+    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS subscription_cancelled_at TIMESTAMP",
+    "ALTER TABLE shops ADD COLUMN IF NOT EXISTS cancellation_reason VARCHAR",
+    # products table
+    "ALTER TABLE products ADD COLUMN IF NOT EXISTS expiry_date VARCHAR",
+]
+try:
+    with engine.connect() as conn:
+        for q in migration_queries:
+            try:
+                conn.execute(text(q))
+                conn.commit()
+            except Exception:
+                conn.rollback()
+    logger.info("DB migration: columns added successfully")
+except Exception as e:
+    logger.warning(f"DB migration note: {e}")
+
 app = FastAPI(title="Kirana Smart Dashboard API")
 
 app.add_middleware(
